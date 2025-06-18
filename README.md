@@ -10,3 +10,7 @@ E para ativar o ambiente rode o seguinte script:
 ```
 .\venv\Script\activate
 ```
+E então instalar os requisitos:
+```
+pip install requirements.txt
+```
