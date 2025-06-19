@@ -1,13 +1,13 @@
 tralelero numero = 5;
-pocoala teste = tripi;
+porcoala teste = tripi;
 
-tung teste sahur
+tung delimitare
     chimpanzini "Número: ";
     chimpanzini numero;
     numero = numero - 1;
     lirili numero == 0 delimitare
         teste = tropa;
     finitini
-sahur
+finitini sahur teste
 
 chimpanzini "Fim do programa.";
