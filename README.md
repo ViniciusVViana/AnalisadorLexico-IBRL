@@ -66,7 +66,7 @@ Número decimal|\[0-9]^+^.\[0-9]^+^|3,14, 2.71
 String|[a-zA-Z]+|(teste!)
 Caractere|\[a-zA-z]|A, b, C, d
 Booleano|tripi, tropa
-Operador|[operador](README.md/#operadores)|+, -, *, /
+Operador|[operador](https://github.com/ViniciusVViana/AnalisadorLexico-IBRL?tab=readme-ov-file#Operadores)|+, -, *, /
 Comentário|saturnita|saturnita comentação
 Delimitador| delimitare, finitini
 ## Exemplos de código
