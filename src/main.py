@@ -14,6 +14,7 @@ patterns_list = [
     (r"tripi|tropa", "VALORES BOOLEANOS: TRUE, FALSE"),
     (r"[a-z][a-zA-Z0-9]*", "IDENTIFICADORES"),
     (r"\d+", "NÚMEROS INTEIROS"),
+    (r"\d+\.\d+", "NÚMEROS PONTO FLUTUANTE"),
     (r"\".*?\"", "STRING"),
     (r"\n", "QUEBRA DE LINHA"),
     (r"    ", "TABULAÇÃO"),
