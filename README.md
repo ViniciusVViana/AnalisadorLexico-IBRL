@@ -105,3 +105,12 @@ E então instalar os requisitos:
 ```
 pip install requirements.txt
 ```
+
+# Como utilizar o analisador léxico (IBRL)
+Com o arquivo ```main.py``` e os arquivos de exemplo com a seguinte extensão ```.ibr``` ja instalados em seu computador execute o seguinte comando para realizar a análise léxica:
+- lembre-se que deve você estar dentro do diretório.
+```
+python main.py nome_do_arquivo.ibr
+```
+Após a execução aparece no seu terminal algo parecido com isso:
+![](./img/carbon.png)
