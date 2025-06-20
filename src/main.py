@@ -1,6 +1,5 @@
 import sys
 import re
-import textwrap
 
 patterns_list = [
 
