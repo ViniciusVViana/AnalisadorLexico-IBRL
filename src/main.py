@@ -43,17 +43,12 @@ patterns_list = [
 ]
 
 
-class TokenInvalido(Exception):
-    def __init__(self, message):
-        super().__init__(message)
-
-# a verificação devera ocorrer da seguinte forma iremos analizar o inicio do arquivo e verificar o pattern se encontrado indicar junto com sua linha correspondente e remover, então vai para o proximo pattern
+# ========== Análise Léxica ==========
+# Função que realiza a análise léxica do arquivo de entrada
 def lex_anal(arch):
     tokens = []
-    exceptions = []
     line = 1
     while arch:
-        punch = False
         for pattern, desc in patterns_list:
             match = re.match(pattern, arch)
             if match:
@@ -61,13 +56,9 @@ def lex_anal(arch):
                 if tokens[-1][0] == "\n":
                     line += 1
                 arch = arch[match.end():]
-                punch = True
                 break
-        if not punch:
-            # quero que mostre a linha atual e a proxima linha
-            exceptions.append(f"Não foi possível reconhecer este token, verifique a escrita: { textwrap.wrap(arch, width=20)[0] } ... na linha {line}")
-            arch = arch[1:]  # Remove o primeiro caractere inválido
-    return tokens, exceptions
+            
+    return tokens
 
 def main():
     if len(sys.argv) > 1:
@@ -75,7 +66,7 @@ def main():
     with open(archive, "r", encoding="utf-8") as file:
         fl = file.read()
 
-    tokens, exceptions = lex_anal(fl)
+    tokens = lex_anal(fl)
 
     if tokens:
         print("Tokens encontrados:")
@@ -88,13 +79,6 @@ def main():
             elif val == " ":
                 val = "' '"
             print(f"[ \033[34m{val}\033[0m  -  \033[32m{token[1]}\033[0m  -  \033[35mLinha {token[2]}\033[0m ]")
-    if exceptions:
-        try:
-            raise TokenInvalido("\n\t\t".join(exceptions))
-        except TokenInvalido as e:
-            print("\t\t\t\t\t\t\t\t\t     ↓")
-            print(f"Token inválido: {e}")
-            print("\t\t\t\t\t\t\t\t\t     ↑")
 
 if __name__ == "__main__":
     main()
