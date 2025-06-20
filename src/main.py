@@ -87,7 +87,7 @@ def main():
                 val = "\\t"
             elif val == " ":
                 val = "' '"
-            print(f"[ {val}  -  {token[1]}  -  Linha {token[2]} ]")
+            print(f"[ \033[34m{val}\033[0m  -  \033[32m{token[1]}\033[0m  -  \033[35mLinha {token[2]}\033[0m ]")
     if exceptions:
         try:
             raise TokenInvalido("\n\t\t".join(exceptions))
