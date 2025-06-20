@@ -1,0 +1,5 @@
+tralelero a = 10;
+tralelero b = 5;!
+tralelero resultado = a + b;^
+chimpanzini "Resultado da soma: ";
+chimpanzini resultado;

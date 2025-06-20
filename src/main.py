@@ -1,28 +1,38 @@
 import sys
 import re
+import textwrap
 
 patterns_list = [
     (r"tralelero|tralala|porcodio|porcoala", "TIPO DE VARIAVEL"),
     (r"lirili|larila", "INICIO E FIM DE ESTRUTURA DE DECISÃO"),
     (r"dunmadin", "INICIO DE LAÇO CONTADO"),
     (r"tung|sahur", "INÍCIO E FIM DE LAÇO DE REPETIÇÃO"),
-    (r"chimpanzini|batapim", "COMANDO DE ENTRADA E SAÍDA"),
+    (r"chimpanzini", "COMANDO DE SAÍDA DE DADO"),
+    (r"batapim", "COMANDO DE ENTRADA DE DADO"),
     (r"delimitare|finitini", "DELIMITADORES DE BLOCOS"),
-    (r"ssturnita", "COMENTÁRIO"),
+    (r"saturnita", "COMENTÁRIO"),
     (r"tripi|tropa", "VALORES BOOLEANOS: TRUE, FALSE"),
     (r"[a-z][a-zA-Z0-9]*", "IDENTIFICADORES"),
     (r"\d+", "NÚMEROS INTEIROS"),
     (r"\".*?\"", "STRING"),
-    (r"\s+", "ESPAÇOS EM BRANCO"),
+    (r"\n", "QUEBRA DE LINHA"),
+    (r"    ", "TABULAÇÃO"),
+    (r"\s", "ESPAÇOS EM BRANCO"),
     (r"\+|\-|\/|\%|\*", "OPERADORES ARITMÉTICOS"),
     (r"==|!=|>|<|<=|>=", "OPERADORES RELACIONAIS"),
     (r"&&|\|\|", "OPERADORES LÓGICOS"),
     (r"\=", "ATRIBUIÇÃO"),
     (r";", "FIM DE INSTRUÇÃO")
 ]
-# a verificação devera ocorrer da seguinte forma iremos analizar o inicio do arquivo e verificar o pattern se encontrado indicar junto com sua linha correspondente e remover, entao vai para o proximo pattern
+
+class TokenInvalido(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+# a verificação devera ocorrer da seguinte forma iremos analizar o inicio do arquivo e verificar o pattern se encontrado indicar junto com sua linha correspondente e remover, então vai para o proximo pattern
 def lex_anal(arch):
     tokens = []
+    exceptions = []
     line = 1
     while arch:
         punch = False
@@ -30,24 +40,36 @@ def lex_anal(arch):
             match = re.match(pattern, arch)
             if match:
                 tokens.append((match.group(0), desc, line))
-                if arch[match.end():].startswith("\n"):
+                if tokens[-1][0] == "\n":
                     line += 1
                 arch = arch[match.end():]
                 punch = True
                 break
         if not punch:
-            raise ValueError(f"Unrecognized token in input: {arch[:20]}")
-    for token in tokens:
-        print(f"{token[0]} - {token[1]} (Line {token[2]})\n")
+            # quero que mostre a linha atual e a proxima linha
+            exceptions.append(f"Não foi possível reconhecer este token, verifique a escrita: { textwrap.wrap(arch, width=20)[0] } ... na linha {line}")
+            arch = arch[1:]  # Remove o primeiro caractere inválido
+    return tokens, exceptions
 
 def main():
     if len(sys.argv) > 1:
         archive = sys.argv[1]
     with open(archive, "r", encoding="utf-8") as file:
         fl = file.read()
-    print(fl)
-    print("\n--------------\n")
-    lex_anal(fl)
+
+    tokens, exceptions = lex_anal(fl)
+
+    if tokens:
+        print("Tokens encontrados:")
+        for token in tokens:
+            print(f"{token[0]} - {token[1]} (Linha {token[2]})")
+    if exceptions:
+        try:
+            raise TokenInvalido("\n\t\t".join(exceptions))
+        except TokenInvalido as e:
+            print("\t\t\t\t\t\t\t\t\t     ↓")
+            print(f"Token inválido: {e}")
+            print("\t\t\t\t\t\t\t\t\t     ↑")
 
 if __name__ == "__main__":
     main()
