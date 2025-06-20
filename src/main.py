@@ -3,28 +3,45 @@ import re
 import textwrap
 
 patterns_list = [
-    (r"tralelero|tralala|porcodio|porcoala", "TIPO DE VARIAVEL"),
-    (r"lirili|larila", "INICIO E FIM DE ESTRUTURA DE DECISÃO"),
-    (r"dunmadin", "INICIO DE LAÇO CONTADO"),
-    (r"tung|sahur", "INÍCIO E FIM DE LAÇO DE REPETIÇÃO"),
-    (r"chimpanzini", "COMANDO DE SAÍDA DE DADO"),
-    (r"batapim", "COMANDO DE ENTRADA DE DADO"),
-    (r"delimitare|finitini", "DELIMITADORES DE BLOCOS"),
-    (r"saturnita", "COMENTÁRIO"),
-    (r"tripi|tropa", "VALORES BOOLEANOS: TRUE, FALSE"),
-    (r"[a-z][a-zA-Z0-9]*", "IDENTIFICADORES"),
-    (r"\d+", "NÚMEROS INTEIROS"),
-    (r"\d+\.\d+", "NÚMEROS PONTO FLUTUANTE"),
-    (r"\".*?\"", "STRING"),
+
+    # Comentários
+    (r"saturnita.*", "COMENTARIO"),
+
+    # Quebra de linha e espaços
     (r"\n", "QUEBRA DE LINHA"),
-    (r"    ", "TABULAÇÃO"),
-    (r"\s", "ESPAÇOS EM BRANCO"),
-    (r"\+|\-|\/|\%|\*", "OPERADORES ARITMÉTICOS"),
-    (r"==|!=|>|<|<=|>=", "OPERADORES RELACIONAIS"),
-    (r"&&|\|\|", "OPERADORES LÓGICOS"),
-    (r"\=", "ATRIBUIÇÃO"),
-    (r";", "FIM DE INSTRUÇÃO")
+    (r"\t", "TABULACAO"),
+    (r" ", "ESPACO"),
+
+    # Palavras-chave
+    (r"tralelero|tralala|porcodio|porcoala", "TIPO DE VARIAVEL"),
+    (r"lirili|larila", "INICIO E FIM DE ESTRUTURA DE DECISAO"),
+    (r"dunmadin", "INICIO DE LACO CONTADO"),
+    (r"tung|sahur", "INICIO E FIM DE LACO DE REPETICAO"),
+    (r"chimpanzini", "COMANDO DE SAIDA"),
+    (r"batapim", "COMANDO DE ENTRADA"),
+    (r"delimitare|finitini", "DELIMITADOR DE BLOCO"),
+    (r"tripi|tropa", "VALOR BOOLEANO"),
+
+    # Identificadores (após palavras-chave)
+    (r"[a-z][a-zA-Z0-9]*", "IDENTIFICADOR"),
+
+    # Literais
+    (r"\d+\.\d+", "NUMERO REAL"),
+    (r"\d+", "NUMERO INTEIRO"),
+    (r"\".*?\"", "STRING"),
+    (r"'.*?'", "CARACTERE"),
+
+    # Operadores
+    (r"\+|\-|\*|\/|\%", "OPERADOR ARITMETICO"),
+    (r"==|!=|>=|<=|>|<", "OPERADOR RELACIONAL"),
+    (r"\&\&|\|\|", "OPERADOR LOGICO"),
+    (r"=", "ATRIBUICAO"),
+    (r";", "FIM DE INSTRUCAO"),
+
+    # Captura qualquer outro caractere (erro léxico)
+    (r".", "TOKEN INVALIDO"),
 ]
+
 
 class TokenInvalido(Exception):
     def __init__(self, message):
@@ -63,7 +80,14 @@ def main():
     if tokens:
         print("Tokens encontrados:")
         for token in tokens:
-            print(f"{token[0]} - {token[1]} (Linha {token[2]})")
+            val = token[0]
+            if val == "\n":
+                val = "\\n"
+            elif val == "\t":
+                val = "\\t"
+            elif val == " ":
+                val = "' '"
+            print(f"[ \033[34m{val}\033[0m  -  \033[32m{token[1]}\033[0m  -  \033[35mLinha {token[2]}\033[0m ]")
     if exceptions:
         try:
             raise TokenInvalido("\n\t\t".join(exceptions))
