@@ -114,7 +114,7 @@ Com o arquivo ```main.py``` e os arquivos de exemplo com a seguinte extensão ``
 python main.py nome_do_arquivo.ibr
 ```
 Após a execução aparece no seu terminal algo parecido com isso:
-![](./img/carbon.png)
+![](./.img/carbon.png)
 ## Usando executavel
 Baixe e execute o instalador, então no terminal execute o seguinte comando:
 ```
