@@ -1,5 +1,5 @@
-tralelero a = 10;
-tralelero b = 5;
-tralelero resultado = a && b;
+tralalero a = 10;
+tralalero b = 5;
+tralalero resultado = a && b;
 chimpanzini "Resultado da soma: ";
 chimpanzini resultado;
