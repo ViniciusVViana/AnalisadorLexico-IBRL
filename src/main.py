@@ -5,6 +5,10 @@ from utils import lex_anal
 __version__ = "1.0.0"
 
 def main():
+    if sys.argv[1] in ("-v", "--version"):
+        print(f"versão {__version__}")
+        return
+
     if len(sys.argv) < 2:
         sys.exit("Uso: python main.py <caminho_do_arquivo>")
 
